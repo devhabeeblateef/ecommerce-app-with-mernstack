@@ -4,15 +4,15 @@ import { registerUser, authUser, updateUser, getUser, logoutUser } from '../cont
 
 
 // Login Route
-router.route('/auth').post(authUser);
+router.post('/auth', authUser);
 
 // Register Route
-router.route('/').post(registerUser);
+router.post('/', registerUser);
 
 // Update Router and Get Router
 router.route('/profile').put(updateUser).get(getUser);
 
 // Logout Router
-router.route('/logout').post(logoutUser);
+router.post('/logout', logoutUser)
 
 export default router;

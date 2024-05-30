@@ -2,21 +2,27 @@ import express from 'express'
 import dotenv from 'dotenv'
 import userRoutes from './routes/userRoutes.js'
 import { notFound, errorHandler } from './middeware/errorMiddleware.js';
-const app = express();
-dotenv.config();
 import connectDB from './config/db.js';
+dotenv.config();
 const port = process.env.PORT_NUMBER 
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-connectDB();
+
+try{
+    connectDB();
+}catch(error){
+    console.log(error.message);
+}
+
 app.get('/', (req, res) => {
-    res.send("Server is ready to serve");
+    res.send("Okay")
 })
 
-app.use(notFound)
-app.use(errorHandler)
-
-
-app.use('/api/users', userRoutes);
+app.use('/api/users', userRoutes)
+app.use(notFound);
+app.use(errorHandler);
 
 app.listen(port, (req, res) => {
     console.log(`Server is listening on port ${port}`)
