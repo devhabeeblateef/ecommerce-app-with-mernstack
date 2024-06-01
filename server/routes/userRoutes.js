@@ -1,7 +1,7 @@
 import express from 'express'
 const router = express.Router();
 import { registerUser, authUser, updateUser, getUser, logoutUser } from '../controllers/userController.js';
-
+import { protect } from '../middeware/authMiddleware.js';
 
 // Login Route
 router.post('/auth', authUser);
@@ -10,7 +10,7 @@ router.post('/auth', authUser);
 router.post('/', registerUser);
 
 // Update Router and Get Router
-router.route('/profile').put(updateUser).get(getUser);
+router.route('/profile').put(protect, updateUser).get(protect, getUser);
 
 // Logout Router
 router.post('/logout', logoutUser)
