@@ -36,8 +36,25 @@ const registerUser = asyncHandler(async (req, res) => {
 
 // Login and authenticate user -- POST
 const authUser = asyncHandler( async (req, res) => {
-    console.log(req.body)
-    res.json({message: "Success"});
+    const {email, password} = req.body;
+
+    const user = await User.findOne({ email })
+
+    if (user && (await user.comparePasswords(password))){
+      generateToken(res, user._id);
+
+      res.status(200).json({
+        id: user._id,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        email: user.email,
+        password: user.password
+      })
+    }else{
+      res.status(401);
+      throw new Error("Invalid Credentials")
+    }
+
 });
 
 // Update User Profile -- PUT
