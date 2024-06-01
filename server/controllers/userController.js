@@ -64,7 +64,14 @@ const updateUser = asyncHandler ( async (req, res) => {
 
 // Logout User -- POST
 const logoutUser =  asyncHandler( async (req, res) => {
-    res.json({message: "Success"});
+    res.cookie('jwt', ' ', {
+      httpOnly: true,
+      expires: new Date(0),
+    })
+
+    res.status(200).json({
+      message: 'Logged Out Successfully'
+    })
 });
 
 const getUser = asyncHandler( async (req, res) => {
